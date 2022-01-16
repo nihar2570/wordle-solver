@@ -1,4 +1,4 @@
-# wordle-solver
+# wordle-solver https://github.com/nihar2570/wordle-solver
 simple python gui to solve wordle game
 
 GAME : https://www.powerlanguage.co.uk/wordle/
