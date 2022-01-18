@@ -1,6 +1,8 @@
 # wordle-solver https://github.com/nihar2570/wordle-solver
 simple python gui to solve wordle game
 
+LIVE :https://nihar2570.github.io/wordle-solver/index.html
+
 GAME : https://www.powerlanguage.co.uk/wordle/
 Guess the WORDLE in 6 tries.
 Each guess must be a valid 5 letter word. Hit the enter button to submit.
