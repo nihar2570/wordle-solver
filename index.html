@@ -17,8 +17,7 @@
   </head>
   <body>
     <div class="container" id="app">
-      <br />
-      <div class="row">
+      <div class="row m-3">
         <div class="col-4 text-center">
           <div class="card shadow p-3 mb-5 bg-body rounded">
             <div class="card-body">
@@ -92,12 +91,24 @@
         </div>
         <div class="col-4">
           <div class="card shadow bg-body rounded">
-            <div class="card-header">Possible words:</div>
+            <div class="card-header">
+              <strong>{{results.length}}</strong> Possible words:
+            </div>
             <ul class="list-group list-group-flush" v-for="(value) in results">
               <li class="list-group-item">{{value}}</li>
             </ul>
           </div>
-          <div>{{ value }}</div>
+        </div>
+        <div class="col-4">
+          <div class="card shadow bg-body rounded">
+            <div class="card-header">hints:</div>
+            <ul
+              class="list-group list-group-flush"
+              v-for="(value,item) in hints"
+            >
+              <li class="list-group-item">{{item}} : {{value}}</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -114,6 +125,7 @@
         data() {
           return {
             results: [],
+            hints: [],
             contains: "pro",
             notcontains: "acgvetihs",
             firstletter: "",
@@ -5926,26 +5938,49 @@
             subset3 = subset1.filter(function (el) {
               return !subset2.includes(el);
             });
-            //var subset4 = this.positions(subset3);
             this.results = this.positions(subset3);
+            subset4 = subset3.join();
+            subset4 = this.charcounter(subset4.split(""));
+            delete subset4[","];
+            for (let char in subset4) {
+              if (subset4[char] < 4) {
+                delete subset4[char];
+              }
+            }
+            this.hints = subset4;
           },
           positions(arr) {
             var arr2 = arr;
-            var result =[];
-            a = this.firstletter
-            b = this.secondletter
-            c = this.thirdletter
-            d = this.fourthletter
-            e = this.fifthletter
-            if(a.length>0){result = arr2.filter(word => word.charAt(0) == a);}
-            if(b.length>0){result = arr2.filter(word => word.charAt(1) == b);}
-            if(c.length>0){result = arr2.filter(word => word.charAt(2) == c);}
-            if(d.length>0){result = arr2.filter(word => word.charAt(3) == d);}
-            if(e.length>0){result = arr2.filter(word => word.charAt(4) == e);}
-            if(a.length + b.length + c.length + d.length + e.length == 0){
-              result = arr2.filter(word => word.charAt(0) == word.charAt(0));
+            var result = [];
+            a = this.firstletter;
+            b = this.secondletter;
+            c = this.thirdletter;
+            d = this.fourthletter;
+            e = this.fifthletter;
+            if (a.length > 0) {
+              result = arr2.filter((word) => word.charAt(0) == a);
+            }
+            if (b.length > 0) {
+              result = arr2.filter((word) => word.charAt(1) == b);
+            }
+            if (c.length > 0) {
+              result = arr2.filter((word) => word.charAt(2) == c);
+            }
+            if (d.length > 0) {
+              result = arr2.filter((word) => word.charAt(3) == d);
+            }
+            if (e.length > 0) {
+              result = arr2.filter((word) => word.charAt(4) == e);
+            }
+            if (a.length + b.length + c.length + d.length + e.length == 0) {
+              result = arr2.filter((word) => word.charAt(0) == word.charAt(0));
             }
             return result;
+          },
+          charcounter(array) {
+            var count = {};
+            array.forEach((val) => (count[val] = (count[val] || 0) + 1));
+            return count;
           },
         },
         mounted() {
