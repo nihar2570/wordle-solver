@@ -17,11 +17,11 @@
   </head>
   <body>
     <div class="container" id="app">
-      <div class="row m-3">
-        <div class="col-4 text-center">
-          <div class="card shadow p-3 mb-5 bg-body rounded">
+      <div class="row row-cols-1 row-cols-md-2 g-4 m-3 justify-content-center">
+        <div class="col col-lg-4">
+          <div class="card text-center shadow p-3 mb-5 bg-body rounded">
             <div class="card-body">
-              <h4 class="card-title">Wordle Solver!</h4>
+              <h5 class="card-title">Wordle Solver!</h5>
               <h6 class="card-subtitle mb-2 text-muted">Fill in the data:</h6>
               <div class="form-floating mb-3">
                 <input
@@ -89,25 +89,19 @@
             </div>
           </div>
         </div>
-        <div class="col-4">
-          <div class="card shadow bg-body rounded">
-            <div class="card-header">
-              <strong>{{results.length}}</strong> Possible words:
+        <div class="col col-lg-4">
+          <div class="card shadow p-3 mb-5 bg-body rounded">
+            <div class="card-body">
+                <h5 class="card-title text-center">Possible words:</h5>
+              <h6 class="card-subtitle mb-2 text-muted text-center">{{results.length}} words</h6>
+              <p class="card-text">
+                <ul class="list-group list-group-numbered">
+                    <li class="list-group-item" v-for="item in results">
+                    {{ item }}
+                    </li>
+                </ul>
+              </p>
             </div>
-            <ul class="list-group list-group-flush" v-for="(value) in results">
-              <li class="list-group-item">{{value}}</li>
-            </ul>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="card shadow bg-body rounded">
-            <div class="card-header">hints:</div>
-            <ul
-              class="list-group list-group-flush"
-              v-for="(value,item) in hints"
-            >
-              <li class="list-group-item">{{item}} : {{value}}</li>
-            </ul>
           </div>
         </div>
       </div>
@@ -5939,48 +5933,25 @@
               return !subset2.includes(el);
             });
             this.results = this.positions(subset3);
-            subset4 = subset3.join();
-            subset4 = this.charcounter(subset4.split(""));
-            delete subset4[","];
-            for (let char in subset4) {
-              if (subset4[char] < 4) {
-                delete subset4[char];
-              }
-            }
-            this.hints = subset4;
           },
-          positions(arr) {
-            var arr2 = arr;
-            var result = [];
-            a = this.firstletter;
-            b = this.secondletter;
-            c = this.thirdletter;
-            d = this.fourthletter;
-            e = this.fifthletter;
-            if (a.length > 0) {
-              result = arr2.filter((word) => word.charAt(0) == a);
-            }
-            if (b.length > 0) {
-              result = arr2.filter((word) => word.charAt(1) == b);
-            }
-            if (c.length > 0) {
-              result = arr2.filter((word) => word.charAt(2) == c);
-            }
-            if (d.length > 0) {
-              result = arr2.filter((word) => word.charAt(3) == d);
-            }
-            if (e.length > 0) {
-              result = arr2.filter((word) => word.charAt(4) == e);
-            }
-            if (a.length + b.length + c.length + d.length + e.length == 0) {
-              result = arr2.filter((word) => word.charAt(0) == word.charAt(0));
-            }
-            return result;
+          placecheck(word){
+            if(this.firstletter.length>0 && word.charAt(0) != this.firstletter){return false}
+            if(this.secondletter.length>0 && word.charAt(1) != this.secondletter){return false}
+            if(this.thirdletter.length>0 && word.charAt(2) != this.thirdletter){return false}
+            if(this.fourthletter.length>0 && word.charAt(3) != this.fourthletter){return false}
+            if(this.fifthletter.length>0 && word.charAt(4) != this.fifthletter){return false}
+            return true
           },
-          charcounter(array) {
-            var count = {};
-            array.forEach((val) => (count[val] = (count[val] || 0) + 1));
-            return count;
+          positions(arr2) {
+            arr = arr2
+            let result = [];
+            var temp = "";
+            for (let word in arr){
+                if(this.placecheck(arr[word])){
+                  result.push(arr[word])
+                }
+            }
+            return result
           },
         },
         mounted() {
